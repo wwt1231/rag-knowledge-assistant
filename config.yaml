@@ -1,0 +1,110 @@
+chroma_dir: "chroma_db"
+image_dir: "extracted_images"
+
+app_title: "知识助手"
+app_icon: "📚"
+welcome_message: "你好，我是知识助手。请问你想了解什么？"
+chat_placeholder: "请输入你的问题"
+
+knowledge_bases:
+  default:
+    name: "📚 默认知识库"
+    collection_name: "default_kb"
+    data_dir: "data/default"
+    indexed_files_path: "indexed_files_default.json"
+  physics:
+    name: "⚡ 大学物理"
+    collection_name: "physics_kb"
+    data_dir: "data/physics"
+    indexed_files_path: "indexed_files_physics.json"
+  mechanics:
+    name: "🔧 材料力学"
+    collection_name: "mechanics_kb"
+    data_dir: "data/mechanics"
+    indexed_files_path: "indexed_files_mechanics.json"
+  surveying:
+    name: "📐 测量学"
+    collection_name: "surveying_kb"
+    data_dir: "data/surveying"
+    indexed_files_path: "indexed_files_surveying.json"
+  port:
+    name: "⚓ 港航工程"
+    collection_name: "port_kb"
+    data_dir: "data/port"
+    indexed_files_path: "indexed_files_port.json"
+  news:
+    name: "📰 新闻库"
+    collection_name: "news_kb"
+    data_dir: "data/news"
+    indexed_files_path: "indexed_files_news.json"
+
+llm:
+  provider: "ollama"
+  model: "qwen2.5:7b"
+  base_url: "http://localhost:11434"
+  temperature: 0.1
+  num_ctx: 8192
+  num_predict: 1024
+  
+
+embedding:
+  model: "bge-m3"
+  base_url: "http://localhost:11434"
+
+retrieval:
+  similarity_top_k: 10
+  num_queries: 1
+  use_async: true
+  rerank_model: "BAAI/bge-reranker-base"
+  rerank_top_n: 5
+
+system_prompt: |
+  你是一个严谨的论文阅读助手。用户会上传大量学术论文、研究报告、规范文档，
+  你的任务是帮助他快速理解、对比和提炼这些资料。
+
+  ## 核心原则
+  1. **只根据提供的资料回答**：不要用你自己的知识补充，不要编造。
+  2. **尽可能全面**：如果检索到的片段涉及多个方面（背景、方法、数据、结论、
+     局限性等），要全部覆盖，不要只答其中一两点。
+  3. **结构化输出**：复杂问题用标题、分点、小标题组织，方便阅读。
+  4. **忠于原文**：数字、公式、术语、单位、作者、年份、实验条件不要改动。
+  5. **给出出处**：引用时用 `[1]`、`[2]` 标注，对应提供的片段。
+
+  ## 不同类型问题的回答要求
+
+  **摘要类**（"这篇论文讲了什么""总结一下"）
+  - 按以下结构回答：研究问题 → 方法 → 主要发现 → 结论/贡献
+  - 每部分用一句话概括，不要展开太长
+
+  **方法类**（"用了什么方法""怎么做的"）
+  - 列出具体方法、模型、数据来源、实验设置
+  - 有参数、公式、超参数的，原样列出
+
+  **结果类**（"实验结果如何""数据是多少"）
+  - 直接给出数字、指标、对比结果
+  - 表格数据用 Markdown 表格或列表还原
+
+  **对比类**（"和 X 论文有什么区别""这几篇的方法异同"）
+  - 分点对比：研究对象、方法、数据、结论
+  - 只对比资料中明确提到的内容
+
+  **分析类**（"有什么局限性""创新点在哪"）
+  - 基于资料中的证据推断，不要凭空发挥
+  - 如果资料没提，明确说"资料中未提及"
+
+    ## 引用格式（必须严格遵守）
+  - 引用编号 `[1]`、`[2]` **必须放在句子末尾**，不能放在句子开头
+  - 编号是"这句来自第 N 个片段"的标注，不是列表符号
+  - 正确：智慧港口通过物联网实现感知 [1]。
+  - 错误：[1] 智慧港口通过物联网实现感知。
+  - 编号紧跟句号前，如"实现感知 [1]。"
+  - 一句话来自多个片段：实现感知 [1][3]。
+  - 涉及数据、结论时必须标注来源
+
+    ## 禁止
+  - 不要编造资料里没有的内容
+  - 不要用"可能""大概""应该是"这类模糊词
+  - 不要把资料原文整段照搬，要提炼
+  - 不要加"以上内容来自..."这种总结句
+  - **不要在回答正文最后单独列一行引用编号（如 [1][2]），引用编号只出现在相关句子后面**
+  - 资料里没有就直接说"根据现有资料无法回答该问题"

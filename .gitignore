@@ -1,0 +1,27 @@
+# 数据与向量库
+data/
+chroma_db/
+extracted_images/
+indexed_files_*.json
+
+# 日志
+*.log
+
+# 密钥
+.env
+config.deepseek.yaml
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# 系统
+.DS_Store
+Thumbs.db

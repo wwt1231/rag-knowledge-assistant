@@ -1,0 +1,14 @@
+streamlit>=1.30
+chromadb>=0.4
+llama-index-core>=0.11
+llama-index-vector-stores-chroma>=0.2
+llama-index-llms-ollama>=0.3
+llama-index-llms-deepseek>=0.1
+llama-index-embeddings-ollama>=0.3
+llama-index-retrievers-bm25>=0.3
+llama-index-readers-file>=0.2
+pymupdf4llm>=0.0.17
+sentence-transformers>=2.7
+jieba>=0.42
+pyyaml>=6.0
+python-pptx>=0.6
