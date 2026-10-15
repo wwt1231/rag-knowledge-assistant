@@ -29,14 +29,14 @@
 
 ```mermaid
 graph TD
-    A[用户提问] --> B{混合检索}
-    B -->|向量检索| C[(ChromaDB)]
-    B -->|BM25关键词| D[本地文档节点]
-    C --> E[Rerank 重排序]
+    A["用户提问"] --> B{"混合检索"}
+    B -->|"向量检索"| C["ChromaDB"]
+    B -->|"BM25关键词"| D["本地文档节点"]
+    C --> E["Rerank 重排序"]
     D --> E
-    E --> F{LLM 生成}
-    F -->|本地模式| G[Ollama qwen2.5]
-    F -->|云端模式| H[DeepSeek API]
-    G --> I[带引用的回答]
+    E --> F{"LLM 生成"}
+    F -->|"本地模式"| G["Ollama qwen2.5"]
+    F -->|"云端模式"| H["DeepSeek API"]
+    G --> I["带引用的回答"]
     H --> I
-    I --> J[Streamlit 前端展示]
+    I --> J["Streamlit 前端展示"]
